@@ -8,7 +8,7 @@ import (
 )
 
 type Event struct {
-	Name string `json:"name"`
+	Path string `json:"path"`
 }
 
 func main() {
@@ -16,5 +16,5 @@ func main() {
 }
 
 func Handler(ctx context.Context, event Event) (string, error) {
-	return fmt.Sprintf("Received request from: %s", event.Name), nil
+	return fmt.Sprintf("Received request from: %s", event.Path), nil
 }
