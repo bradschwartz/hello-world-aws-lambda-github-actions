@@ -1,0 +1,37 @@
+name: Go
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
+
+      - name: Build
+        run: go build -o bootstrap -v ./... && zip deployment.zip bootstrap
+
+      - name: Test
+        run: go test -cover -v ./...
+
+      - name: Deploy Lambda
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-west-2
+          function_name: hello-world-github-actions
+          zip_file: ./deployment.zip
+          memory_size: 128
+          timeout: 2
+          handler: Handler
+          runtime: provided.al2

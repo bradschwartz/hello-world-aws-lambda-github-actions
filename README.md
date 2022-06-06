@@ -13,4 +13,14 @@ General Steps:
 
 Diving in, I'm using Go as the language/tooling for the lambda. We'll note here
 every step we said we'd do above for the specific project steps, and try to document
-the corresponding GitHub Actions setup
+the corresponding GitHub Actions setup.
+
+1. ~~Lint~~
+1. Build/Compile
+  - `go build -o bootstrap -v ./...`
+1. Unit Tests
+  - `go test -cover -v ./...`
+1. Code Quality
+  - Implicitly using SonarCloud, no specific Actions
+1. Deploy
+  - `appleboy/lambda-action@master`
